@@ -1,0 +1,9 @@
+.UserInput
+{
+    display: inline-block;
+    box-shadow: 0 2px 2px #ccc;
+    border : 1px solid #eee;
+    padding: 5px;
+    margin: 4px;
+    width: 300px;
+}
