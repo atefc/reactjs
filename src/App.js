@@ -1,65 +1,53 @@
 import './App.css';
-import './UserInput/userInput';
-import UserInput from './UserInput/userInput';
-import './UserOutpout/userOutput';
-import UserOutput from './UserOutpout/userOutput';
-import {useState} from 'react';
+import {Component} from 'react';
+import ValidatorComponent from './ValidationComponent/validator';
+import CharComponent from './CharComponent/charComponent';
 
-function App() {
-  const [usersState,setUsersState] = useState(
+ class App extends Component {
+   state = 
+   {
+    inputLength : 0,
+    inputText : null
+   };
+ 
+   deleteLetter(index)
+   {
+     console.log("Delete letter : ",index)
+     let letterList = [...this.state.inputText];
+     letterList.splice(index,1);
+     this.setState({inputText : letterList.join('')});
+   }
+  
+  render()
+  {
+   const updateTextLength = (event)=>
     {
-      users:
-    [
+      console.log("New event ...");
+      this.setState({inputLength : event.target.value.length, inputText : event.target.value});
+    }
+
+   let  charCompList = null;
+   if(this.state.inputText)
+   {
+     let letters = [...this.state.inputText];
+    charCompList = (
+      letters.map((char,index)=>
       {
-        name : "Atef"
-      },
-      {
-        name : "Max"
+       return (<CharComponent letter = {char} click={()=>this.deleteLetter(index)}></CharComponent>)
       }
-    ]
+    ))
+   }
+
+    return (
+      <div className="App">
+        <h1>Practice - Section-4</h1>
+        <input type="text" onChange={updateTextLength} value={this.state.inputText}/>
+        <p>{this.state.inputLength}</p>
+        <ValidatorComponent length={this.state.inputLength}></ValidatorComponent>
+        {charCompList}
+      </div>
+    );
   }
-  );
-  const updateNameHandler = (name)=>
-  {
-    setUsersState(
-      {
-        users:
-      [
-        {
-          name : name
-        },
-        {
-          name : "Max"
-        }
-      ]
-    }
-    )
-  }
-  const _updateNameHandler = (event)=>
-  {
-    setUsersState(
-      {
-        users:
-      [
-        {
-          name : event.target.value
-        },
-        {
-          name : "Max"
-        }
-      ]
-    }
-    )
-  }
-  return (
-    <div className="App">
-      <h1>Practice - Section-3</h1>
-      <UserInput changed={_updateNameHandler}></UserInput>
-      <button onClick={updateNameHandler.bind(this,"Atef!")}>Update names</button>
-      <UserOutput name={usersState.users[0].name}></UserOutput>
-      <UserOutput name={usersState.users[1].name}></UserOutput>
-    </div>
-  );
 }
 
 export default App;
